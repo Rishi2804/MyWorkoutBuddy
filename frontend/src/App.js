@@ -6,9 +6,9 @@ import Home from "./pages/Home"
 import History from './pages/History/History'
 import Progress from './pages/Progress/Progress'
 import Excercises from './pages/Exercises/Exercises'
-import Signup from "./pages/Signup"
-import Login from "./pages/Login"
-import NavBar from "./components/Header/NavBar"
+import Signup from "./pages/AuthForms/Signup"
+import Login from "./pages/AuthForms/Login"
+import Header from "./components/Header/NavBar"
 import UserBottomNav from './components/UserBottomNav'
 
 function App() {
@@ -18,9 +18,13 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar />
+        <Header />
         <div className="pages">
           <Routes>
+          <Route 
+              path="/"
+              element={<Navigate to="/create"/>}
+            />
             <Route 
               path="/create"
               element={user ? <Home /> : <Navigate to="/login"/>}
