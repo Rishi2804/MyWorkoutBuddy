@@ -3,9 +3,13 @@ import { useAuthContext } from './hooks/useAuthContext'
 
 // pages & components
 import Home from "./pages/Home"
+import History from './pages/History/History'
+import Progress from './pages/Progress/Progress'
+import Excercises from './pages/Exercises/Exercises'
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
-import NavBar from "./components/NavBar"
+import NavBar from "./components/Header/NavBar"
+import UserBottomNav from './components/UserBottomNav'
 
 function App() {
   const { user } = useAuthContext()
@@ -18,19 +22,32 @@ function App() {
         <div className="pages">
           <Routes>
             <Route 
-              path="/"
+              path="/create"
               element={user ? <Home /> : <Navigate to="/login"/>}
             />
             <Route 
+              path="/history"
+              element={user ? <History /> : <Navigate to="/login"/>}
+            />
+            <Route 
+              path="/excercises"
+              element={user ? <Excercises /> : <Navigate to="/login"/>}
+            />
+            <Route 
+              path="/progress"
+              element={user ? <Progress /> : <Navigate to="/login"/>}
+            />
+            <Route 
               path="/login"
-              element={!user ? <Login /> : <Navigate to="/"/>}
+              element={!user ? <Login /> : <Navigate to="/create"/>}
             />
             <Route 
               path="/signup"
-              element={ !user ? <Signup /> : <Navigate to="/"/>}
+              element={ !user ? <Signup /> : <Navigate to="/create"/>}
             />
           </Routes>
         </div>
+        {user && <UserBottomNav />}
       </BrowserRouter>
     </div>
   );
