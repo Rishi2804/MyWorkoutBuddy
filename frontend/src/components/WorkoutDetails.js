@@ -26,10 +26,10 @@ const WorkoutDetails = ({ workout }) => {
 
     return (
         <div className="workout-details">
-            <h4>{workout.title}</h4>
-            <p><strong>Weight: </strong>{workout.weight}</p>
-            <p><strong>Reps: </strong>{workout.reps}</p>
-            <p>{workout.createdAt}</p>
+            <h4>{workout.exercises[0].name}</h4>
+            <p><strong>Weight: </strong>{workout.exercises[0].sets[0].weight}</p>
+            <p><strong>Reps: </strong>{workout.exercises[0].sets[0].reps}</p>
+            <p>{workout.date}</p>
             <span onClick={handleClick}>Delete</span>
         </div>
     )
