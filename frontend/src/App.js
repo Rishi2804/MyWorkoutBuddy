@@ -3,6 +3,7 @@ import { useAuthContext } from './hooks/useAuthContext'
 
 // pages & components
 import Home from "./pages/Home"
+import Create from "./pages/Create/Create"
 import History from './pages/History/History'
 import Progress from './pages/Progress/Progress'
 import Excercises from './pages/Exercises/Exercises'
@@ -21,9 +22,13 @@ function App() {
         <Header />
         <div className="pages">
           <Routes>
-          <Route 
+            <Route 
               path="/"
               element={<Navigate to="/create"/>}
+            />
+            <Route 
+              path="/new"
+              element={<Create/>}
             />
             <Route 
               path="/create"

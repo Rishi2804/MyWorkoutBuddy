@@ -4,8 +4,8 @@ import { useLogout } from '../../hooks/useLogout'
 import { useAuthContext } from '../../hooks/useAuthContext'
 
 // components
-import { Button, ThemeProvider } from '@mui/material'
-import theme from './HeaderButtonTheme';
+import { Button } from '@mui/material'
+import PrimaryButtonThemeProvider from '../../themes/PrimaryButtonThemeProvider'
 
 const Header = () => {
     const { logout } = useLogout()
@@ -21,7 +21,7 @@ const Header = () => {
                 <Link to="/">
                     <h1>My Workout Buddy</h1>
                 </Link>
-                <ThemeProvider theme={theme}>
+                <PrimaryButtonThemeProvider>
                     <nav>
                         {user && (
                             <div className='test'>
@@ -32,7 +32,7 @@ const Header = () => {
                         { !user && (
                             <div>
                                 <Link to="/login">
-                                    <Button variant='contained' sx={{color: 'white'}}>Login</Button>
+                                    <Button variant='contained'>Login</Button>
                                 </Link>
                                 <Link to="/signup">
                                 <Button variant='outlined'>Signup</Button>
@@ -40,7 +40,7 @@ const Header = () => {
                             </div>
                         )}
                     </nav>
-                </ThemeProvider>
+                </PrimaryButtonThemeProvider>
             </div>
         </header>
     )
