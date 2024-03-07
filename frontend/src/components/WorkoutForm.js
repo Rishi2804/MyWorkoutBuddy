@@ -20,7 +20,9 @@ const WorkoutForm = () => {
             return
         }
 
-        const workout = {title, reps, weight}
+        const exercise = {name: title, sets: [{reps, weight}]}
+
+        const workout = {title: "Workout", date: new Date(), duration: 60, exercises: [exercise]}
 
         const response = await fetch('/api/workouts', {
             method: 'POST',
