@@ -2,7 +2,8 @@ import './WorkoutView.css'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import { Stack } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import WorkoutModal from '../WorkoutModal/WorkoutModal'
 
 const WorkoutDetails = ({ workout }) => {
     const exercises = workout.exercises
@@ -42,7 +43,7 @@ const WorkoutDetails = ({ workout }) => {
     const previewList = exercisesSummaryTransfomer()
 
     return (
-        <div className='media'>
+        <WorkoutModal>
             <h3 className='title'>{workout.title}</h3>
             <div className='details'>
                 <Stack direction="row" alignItems="center" gap={1}>
@@ -70,7 +71,7 @@ const WorkoutDetails = ({ workout }) => {
                     )
                 }
             </div>
-        </div>
+        </WorkoutModal>
     )
 }
 

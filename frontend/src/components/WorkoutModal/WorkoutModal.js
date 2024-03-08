@@ -1,15 +1,21 @@
 import { useState } from 'react';
-import Box from '@mui/material/Box';
+import Fade from '@mui/material/Fade';
+import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: "60%",
+  height: "60%",
   bgcolor: 'background.paper',
-  border: '2px solid #000',
+  border: '1px solid #000',
+  borderRadius: 10,
   boxShadow: 24,
   p: 4,
 };
@@ -19,22 +25,45 @@ const WorkoutModal = ({ children }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const EnclosureCard = styled(Paper)(() => ({
+    display: 'flex',
+    flexDirection: 'column',
+    width: '22vw',
+    padding: '5px',
+    margin: '5px 0',
+    marginRight: '1.2em',
+    backgroundColor: 'white',
+    borderRadius: '10px',
+    position: 'relative',
+    overflow: 'hidden'
+  }));
+
   return (
     <div>
-      <div className='workout-view' handleOpen={handleOpen}>
-        { children }
-      </div>
+      <EnclosureCard 
+          className="media"
+          style={{ cursor: "pointer" }}
+          onClick={handleOpen}
+      >
+          {children}
+      </EnclosureCard>
       <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
       >
-        <Box sx={style}>
-          <div className='workout-modal'>
-            <p>This is a modal that displays the workout</p>
-          </div>
-        </Box>
+        <Fade in={open}>
+          <Box sx={style}>
+          </Box>
+        </Fade>
       </Modal>
     </div>
   );
