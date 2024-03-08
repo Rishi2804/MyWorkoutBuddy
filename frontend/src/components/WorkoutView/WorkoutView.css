@@ -1,0 +1,60 @@
+.media {
+    display: flex;
+    flex-direction: column;
+    width: 23%;
+    padding: 5px;
+    margin: 5px 0;
+    background-color: white;
+    border-radius: 10px;
+    position: relative;
+    margin-right: 1em;
+}
+
+.title {
+    text-align: center;
+    color: var(--primary);
+}
+
+.details{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 0.8em;
+    margin-right: 0.8em;
+    flex-wrap: wrap;
+}
+
+.caption {
+    font-size: 0.8em;
+    color: #666;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+    margin-top: 0.3em;
+    flex-grow: 1;
+    min-height: 10em;
+}
+
+.list::after {
+    content: '';
+    display: block;
+    visibility: hidden;
+}
+
+.list-item {
+    font-size: 0.97em;
+}
+
+.workout {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+
+.moreExist {
+    writing-mode: vertical-lr;
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
