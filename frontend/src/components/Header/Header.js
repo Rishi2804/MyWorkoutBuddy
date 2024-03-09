@@ -1,9 +1,11 @@
 import './Header.css'
 import { Link } from 'react-router-dom'
+
+// Hooks
 import { useLogout } from '../../hooks/useLogout'
 import { useAuthContext } from '../../hooks/useAuthContext'
 
-// components
+// Components
 import { Button } from '@mui/material'
 import PrimaryButtonThemeProvider from '../../themes/PrimaryButtonThemeProvider'
 

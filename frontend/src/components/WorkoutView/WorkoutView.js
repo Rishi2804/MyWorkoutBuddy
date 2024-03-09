@@ -1,8 +1,12 @@
 import './WorkoutView.css'
+
+// MUI Components
+import Stack from '@mui/material/Stack';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import Stack from '@mui/material/Stack';
+
+// Components
 import WorkoutModal from '../WorkoutModal/WorkoutModal'
 
 const WorkoutDetails = ({ workout }) => {
@@ -39,11 +43,13 @@ const WorkoutDetails = ({ workout }) => {
         })
         return strings
     }
-    
+
+    const duration = timeFormatter()
+    const totalWeight = totalWeightLifted()
     const previewList = exercisesSummaryTransfomer()
 
     return (
-        <WorkoutModal>
+        <WorkoutModal workout={workout} details={{date , duration, totalWeight}}>
             <h3 className='title'>{workout.title}</h3>
             <div className='details'>
                 <Stack direction="row" alignItems="center" gap={1}>
@@ -52,11 +58,11 @@ const WorkoutDetails = ({ workout }) => {
                 </Stack>
                 <Stack direction="row" alignItems="center" gap={1}>
                     <AccessTimeIcon />
-                    <span className='caption'>{timeFormatter()}</span>
+                    <span className='caption'>{duration}</span>
                 </Stack>
                 <Stack direction="row" alignItems="center" gap={1}>
                     <FitnessCenterIcon />
-                    <span className='caption'>{totalWeightLifted()}</span>
+                    <span className='caption'>{totalWeight}</span>
                 </Stack>
             </div>
             <div className='list'>

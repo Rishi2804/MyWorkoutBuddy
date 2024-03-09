@@ -3,7 +3,7 @@
     color: var(--primary);
 }
 
-.details{
+.details {
     display: flex;
     justify-content: space-between;
     margin-left: 0.8em;

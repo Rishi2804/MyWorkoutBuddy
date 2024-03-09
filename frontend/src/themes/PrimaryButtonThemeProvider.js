@@ -16,6 +16,12 @@ const theme = createTheme({
         contained: {
           color: 'white'
         },
+        outlined: {
+          border: '2px solid',
+          '&:hover': {
+            border: '2px solid'
+          }
+        }
       },
     },
   },

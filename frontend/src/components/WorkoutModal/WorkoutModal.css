@@ -1,0 +1,29 @@
+.actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header {
+    text-align: center;
+    color: var(--primary);
+    font-size: 2em;
+    margin-top: -0.1em;
+}
+
+.details-section {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 0.8em;
+    margin-right: 0.8em;
+    flex-wrap: wrap;
+    margin-top: -1em;
+}
+
+h3.exercise-name {
+    margin-bottom: -2px;
+}
+
+.detailed-exercises {
+    overflow-y: auto;
+    overflow-x: hidden;
+}

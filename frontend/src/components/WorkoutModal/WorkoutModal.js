@@ -1,26 +1,41 @@
-import { useState } from 'react';
-import Fade from '@mui/material/Fade';
-import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
+import './WorkoutModal.css'
+import { useState } from 'react'
+
+// MUI components
 import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
+import { Button, Paper, Modal, Backdrop, Fade, Box, Stack } from '@mui/material';
+import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import DeleteButtonThemeProvider from '../../themes/DeleteButtonThemeProvider';
+
+// Contexts
+import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext"
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: "60%",
-  height: "60%",
+  width: "40%",
+  height: "75%",
   bgcolor: 'background.paper',
   border: '1px solid #000',
   borderRadius: 10,
   boxShadow: 24,
   p: 4,
+  overflowY: 'scroll'
 };
 
-const WorkoutModal = ({ children }) => {
+const WorkoutModal = ({ children, workout, details }) => {
+
+  const { dispatch } = useWorkoutsContext()
+  const { user } = useAuthContext()
+
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,6 +52,27 @@ const WorkoutModal = ({ children }) => {
     position: 'relative',
     overflow: 'hidden'
   }));
+
+  const handleDeleteClick = async () => {
+    if (!user) {
+      return
+    }
+
+    const response = await fetch('/api/workouts/' + workout._id, {
+      method: 'DELETE',
+      headers: {
+          'Authorization': `Bearer ${user.token}`
+      }
+    })
+
+    const json = await response.json()
+
+    if (response.ok) {
+        dispatch({type: 'DELETE_WORKOUT', payload: json})
+    }
+    setTimeout(3000)
+    handleClose()
+  }
 
   return (
     <div>
@@ -62,6 +98,70 @@ const WorkoutModal = ({ children }) => {
       >
         <Fade in={open}>
           <Box sx={style}>
+            <div className='actions'>
+              <Button variant='contained'>
+                Edit
+              </Button>
+              <DeleteButtonThemeProvider>
+                <Button variant='contained' onClick={handleDeleteClick} style={{marginLeft: '10px'}}>
+                  <DeleteIcon style={{ fontSize: 18 }}/>
+                </Button>
+              </DeleteButtonThemeProvider>
+            </div>
+            <h2 className='header'>{workout.title}</h2>
+            <div className='details-section'>
+                <Stack direction="row" alignItems="center" gap={1}>
+                    <CalendarMonthIcon />
+                    <span className='caption'>{details.date}</span>
+                </Stack>
+                <Stack direction="row" alignItems="center" gap={1}>
+                    <AccessTimeIcon />
+                    <span className='caption'>{details.duration}</span>
+                </Stack>
+                <Stack direction="row" alignItems="center" gap={1}>
+                    <FitnessCenterIcon />
+                    <span className='caption'>{details.totalWeight}</span>
+                </Stack>
+            </div>
+            <div className='detailed-exercises' style={{overflowY: 'scroll'}}>
+              {
+                workout.exercises.map((e) => (
+                  <div>
+                    <h3 className='exercise-name'>{e.name}</h3>
+                    <TableContainer>
+                      <Table size='small'>
+                        <colgroup>
+                          <col width='10%' />
+                          <col width='60%' />
+                          <col width='15%' />
+                          <col width='15%' />
+                        </colgroup>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell align='center'>Set</TableCell>
+                            <TableCell></TableCell>
+                            <TableCell align='center'>Weight</TableCell>
+                            <TableCell align='center'>Reps</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {
+                            e.sets.map((set, setIndex) => (
+                              <TableRow>
+                                <TableCell align='center'>{setIndex + 1}</TableCell>
+                                <TableCell></TableCell>
+                                <TableCell align='center'>{set.weight}</TableCell>
+                                <TableCell align='center'>{set.reps}</TableCell>
+                              </TableRow>
+                            ))
+                          }
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </div>
+                ))
+              }
+            </div>
           </Box>
         </Fade>
       </Modal>
