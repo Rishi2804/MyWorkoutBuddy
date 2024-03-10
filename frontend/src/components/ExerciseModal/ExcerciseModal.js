@@ -108,7 +108,8 @@ const WorkoutModal = ({ children, exercise }) => {
                         src={exercise.images[imageIndex]} 
                         alt={exercise.id} 
                         className='big-image' 
-                        onClick={handleImageSrc}
+                        onMouseEnter={handleImageSrc}
+                        onMouseLeave={handleImageSrc}
                     />
                 </div>
                 <p>Primary Muscles: {transformData(exercise.primaryMuscles).join(', ')}</p>
