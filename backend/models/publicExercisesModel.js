@@ -30,27 +30,27 @@ const exerciseSchema = new Schema({
         required: true
     },
     primaryMuscles: {
-        type: String,
+        type: [String],
         enum: [ "abdominals", "abductors", "adductors", "biceps",
                     "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower back",
                     "middle back", "neck", "quadriceps", "shoulders", "traps", "triceps" ],
         required: true
     },
     secondaryMuscles: {
-        type: String,
+        type: [String],
         enum: [ "abdominals", "abductors", "adductors", "biceps",
                     "calves", "chest", "forearms", "glutes", "hamstrings", "lats", "lower back",
                     "middle back", "neck", "quadriceps", "shoulders", "traps", "triceps" ],
         required: true
     },
+    instructions: {
+        type: [String],
+        required: false
+    },
     category: {
         type: String,
         enum: [ "powerlifting", "strength", "stretching", "cardio", "olympic weightlifting", "strongman", "plyometrics" ],
         required: true
-    },
-    instructions: {
-        type: [String],
-        required: false
     },
     images: {
         type: [String],
