@@ -48,7 +48,7 @@ const WorkoutModal = ({ children, workout, details }) => {
     margin: '5px 0',
     marginRight: '1.2em',
     backgroundColor: 'white',
-    borderRadius: '10px',
+    borderRadius: '25px',
     position: 'relative',
     overflow: 'hidden'
   }));
@@ -138,10 +138,10 @@ const WorkoutModal = ({ children, workout, details }) => {
                         </colgroup>
                         <TableHead>
                           <TableRow>
-                            <TableCell align='center'>Set</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 600}}>Set</TableCell>
                             <TableCell></TableCell>
-                            <TableCell align='center'>Weight</TableCell>
-                            <TableCell align='center'>Reps</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 600}}>Weight</TableCell>
+                            <TableCell align='center' sx={{fontWeight: 600}}>Reps</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
