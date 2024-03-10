@@ -62,6 +62,21 @@ const WorkoutModal = ({ children, exercise }) => {
         setImageIndex(imageIndex === 0 ? 1 : 0)
     }
 
+    const transformData = (data) => {
+      if (Array.isArray(data)) {
+        // eslint-disable-next-line
+        data.map((ele, setEle) => {
+          data[setEle] = ele.charAt(0).toUpperCase() + ele.slice(1)
+        })
+      } else if (data) {
+        data = data.charAt(0).toUpperCase() + data.slice(1)
+      } else {
+        data = 'N/A'
+      }
+
+      return data
+    }
+
     return (
     <div>
       <EnclosureCard 
@@ -96,16 +111,18 @@ const WorkoutModal = ({ children, exercise }) => {
                         onClick={handleImageSrc}
                     />
                 </div>
-                <p>Primary Muscles: {exercise.primaryMuscles.join(', ')}</p>
-                <p>Secondary Muscles: {exercise.secondaryMuscles.join(', ')}</p>
-                <p>Level: {exercise.level}</p>
-                <p>Force: {exercise.force}</p>
-                <p>Mechanic: {exercise.mechanic ? exercise.mechanic : 'N/A'}</p>
-                <p>Equipment: {exercise.equipment}</p>
-                <p>Category: {exercise.category}</p>
+                <p>Primary Muscles: {transformData(exercise.primaryMuscles).join(', ')}</p>
+                <p>Secondary Muscles: {transformData(exercise.secondaryMuscles).join(', ')}</p>
+                <p>Force: {transformData(exercise.force)}</p>
+                <p>Mechanic: {transformData(exercise.mechanic)}</p>
+                <p>Equipment: {transformData(exercise.equipment)}</p>
             </div>
             <div className='right-summary'>
-                <h2 className='title'>{exercise.name}</h2>
+                <h2 className='title name'>{exercise.name}</h2>
+                <div className='details'>
+                  <p>Level: {transformData(exercise.level)}</p>
+                  <p>Category: {transformData(exercise.category)}</p>
+                </div>
                 <div className='instructions'>
                     {
                         exercise.instructions && exercise.instructions.map((step, stepIndex) => (

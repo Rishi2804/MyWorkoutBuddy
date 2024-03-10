@@ -12,6 +12,10 @@
     overflow-y: scroll;
 }
 
+.name {
+    margin-bottom: -5px;
+}
+
 .big-image {
     width: 100%;
 }
