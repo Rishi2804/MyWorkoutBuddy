@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const getWorkouts = async (req, res) => {
     const user_id = req.user._id
 
-    const workouts = await Workout.find({ user_id }).sort({createdAt: -1})
+    const workouts = await Workout.find({ user_id }).sort({date: -1})
 
     res.status(200).json(workouts)
 }
@@ -78,7 +78,6 @@ const createWorkout = async (req, res) => {
     if (setsWithoutWeightsOrReps.length > 0) {
         return res.status(400).json({ error: 'Each set must have both weights and reps', setsWithoutWeightsOrReps })
     }
-
 
     // add doc to db
     try {
