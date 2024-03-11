@@ -4,8 +4,9 @@ import CircularProgress from '@mui/material/CircularProgress'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import ExerciseView from '../../components/ExerciseView/ExerciseView'
 import CustomPagination from '../../components/CustomPagination/CustomPagination'
-import { InputAdornment, TextField } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
+import { TextField } from '@mui/material'
+import FilterSelect from '../../components/FilterSelect/FilterSelect'
+import { muscles, forces } from '../../global/exerciseEnums'
 
 const Excercises = () => {
     const { user } = useAuthContext()
@@ -14,13 +15,19 @@ const Excercises = () => {
     const [ page, setPage ] = useState(1)
     const [ numPages, setNumPages ] = useState(1)
     const [ searchTerm, setSearchTerm ] = useState(null)
+    const [ forceFilters, setForceFilters ] = useState('')
+    const [ primaryMuscleFilters, setPrimaryMuscleFilters ] = useState([])
+    const [ secondaryMuscleFilters, setSecondaryMuscleFilters ] = useState([])
 
     useEffect(() => {
         const fetchExercises = async () => {
             setLoading(true)
             const trimmedSearchTerm = searchTerm ? searchTerm.trim() : null
             const response = await fetch(`/api/public-exercises?page=${page}&limit=50` 
-                                            + (trimmedSearchTerm ? `&search=${trimmedSearchTerm}` : ''), {
+                                            + (trimmedSearchTerm ? `&search=${trimmedSearchTerm}` : '')
+                                            + (primaryMuscleFilters.length !== 0 ? `&primaryMuscles=${primaryMuscleFilters.join(',')}` : '')
+                                            + (secondaryMuscleFilters.length !== 0 ? `&secondaryMuscles=${secondaryMuscleFilters.join(',')}` : '')
+                                            + ((forceFilters || forceFilters !== '') ? `&force=${forceFilters}` : ''), {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
@@ -36,7 +43,7 @@ const Excercises = () => {
         if (user) {
             fetchExercises()
         }
-    }, [user, page, searchTerm])
+    }, [user, page, searchTerm, forceFilters, primaryMuscleFilters, secondaryMuscleFilters])
 
     return (
         <div>
@@ -45,15 +52,38 @@ const Excercises = () => {
                 className='search-box'
                 variant='filled'
                 label='Search'
-                onKeyDown={(e) => {if (e.key === 'Enter') setSearchTerm(e.target.value)}}
+                onKeyDown={(e) => {if (e.key === 'Enter') {
+                                        setSearchTerm(e.target.value)
+                                        setPage(1)
+                                    }}}
                 InputProps={{
-                    startAdornment: (
-                        <InputAdornment position="start">
-                            <SearchIcon />
-                        </InputAdornment>
-                    )
+                    sx: { input: {backgroundColor: 'white'} }
                 }}
+                fullWidth
             />
+            <div>
+                <FilterSelect 
+                    options={forces} 
+                    multiSelect={false}
+                    text={"Force"}
+                    filterValues={forceFilters} 
+                    setFilterValues={setForceFilters}
+                />
+                <FilterSelect 
+                    options={muscles}
+                    multiSelect={true}
+                    text={"Primary Muscles"}
+                    filterValues={primaryMuscleFilters} 
+                    setFilterValues={setPrimaryMuscleFilters}
+                />
+                <FilterSelect 
+                    options={muscles} 
+                    multiSelect={true}
+                    text={"Secondary Muscles"}
+                    filterValues={secondaryMuscleFilters} 
+                    setFilterValues={setSecondaryMuscleFilters}
+                />
+            </div>
             {
                 loading && (
                         <>
