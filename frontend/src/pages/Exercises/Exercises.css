@@ -3,3 +3,12 @@
     flex-wrap: wrap;
     align-items: center;
 }
+
+.filters {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding-left: 15px;
+}

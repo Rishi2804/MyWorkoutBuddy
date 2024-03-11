@@ -12,6 +12,8 @@ const getExcersies = async (req, res) => {
     const primaryMusclesList = req.query.primaryMuscles;
     const secondaryMusclesList = req.query.secondaryMuscles;
     const force = req.query.force;
+    const equipment = req.query.equipment
+    const mechanic = req.query.mechanic
 
     // add name search if parameter exists
     if (searchTerm) {
@@ -27,6 +29,10 @@ const getExcersies = async (req, res) => {
     if (primaryMusclesList) conditions.push({ primaryMuscles: { $in : primaryMusclesList.split(',') } })
     if (secondaryMusclesList) conditions.push({ secondaryMuscles: { $in : secondaryMusclesList.split(',') } })
     if (force) conditions.push({ force: force })
+    if (equipment && equipment !== 'none') conditions.push({ equipment: equipment })
+    if (equipment && equipment === 'none') conditions.push({ equipment: null })
+    if (mechanic && mechanic !== 'none') conditions.push({ mechanic: mechanic })
+    if (mechanic && mechanic === 'none') conditions.push({ mechanic: null })
 
 
     let query = {};

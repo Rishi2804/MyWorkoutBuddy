@@ -37,7 +37,7 @@ const FilterSelect = ({ options, text, multiSelect, filterValues, setFilterValue
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: '28%' }}>
+      <FormControl sx={{ m: 1, width: '17vw' }}>
         <InputLabel id="demo-multiple-name-label">{text}</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
