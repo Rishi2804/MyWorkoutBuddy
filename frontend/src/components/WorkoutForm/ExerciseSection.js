@@ -30,6 +30,11 @@ const ExerciseSection = ({ nameList, exercise, exerciseIndex, setName, setSets, 
         setSets(exerciseIndex, list)
     }
 
+    const autoCompleteFormatter = (name) => {
+        const firstLetter = name[0].toUpperCase();
+        return { firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter, name: name }
+    }
+
     return (
         <>
             <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
@@ -37,10 +42,10 @@ const ExerciseSection = ({ nameList, exercise, exerciseIndex, setName, setSets, 
                     options={nameList ? nameList : ["exercises not loading"]}
                     groupBy={(item) => item.firstLetter}
                     getOptionLabel={(item) => item.name}
-                    value={exercise.name}
+                    value={exercise.name ? autoCompleteFormatter(exercise.name) : null}
                     renderInput={(params) => <TextField {...params} variant="standard" label="Exercise"/>}
                     sx={{width: '80%'}}
-                    onChange={(event, value) => setName(exerciseIndex, value)}
+                    onChange={(event, value) => setName(exerciseIndex, value ? value.name : null)}
                 />
                 { displayDelete && <DeleteButtonThemeProvider>
                     <Button sx={{float: "right"}} onClick={removeSelf}>
@@ -78,7 +83,7 @@ const ExerciseSection = ({ nameList, exercise, exerciseIndex, setName, setSets, 
                                         <Input 
                                             type="number"
                                             value={set.weight ? set.weight : ''}
-                                            inputProps={{min: 0}}
+                                            inputProps={{min: 0, style: {textAlign: 'center'}}}
                                             onChange={(e) => handleChange("weight", e.target.value, setIndex)}
                                         />
                                     </TableCell>
@@ -86,7 +91,7 @@ const ExerciseSection = ({ nameList, exercise, exerciseIndex, setName, setSets, 
                                         <Input 
                                             type="number"
                                             value={set.reps ? set.reps : ''}
-                                            inputProps={{min: 0}}
+                                            inputProps={{min: 0, style: {textAlign: 'center'}}}
                                             onChange={(e) => handleChange("reps", e.target.value, setIndex)}
                                         />
                                     </TableCell>

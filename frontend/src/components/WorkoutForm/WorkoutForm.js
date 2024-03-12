@@ -12,7 +12,7 @@ import PrimaryButtonThemeProvider from "../../themes/PrimaryButtonThemeProvider"
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext";
 
-const WorkoutForm = ({ handleClose, namesList }) => {
+const WorkoutForm = ({ handleClose, namesList, workout }) => {
     const { dispatch } = useWorkoutsContext()
     const { user } = useAuthContext()
     const [error, setError] = useState(null)
@@ -23,6 +23,13 @@ const WorkoutForm = ({ handleClose, namesList }) => {
     const [ duration, setDuration ] = useState(null)
     const [ exercises, setExercises ] = useState([{name: null, sets: [{reps: null, weight: null}]}])
 
+    if (workout) {
+        setTitle(workout.title)
+        setDate(workout.date)
+        setDuration(workout.duration)
+        setExercises(workout.exercises)
+    }
+
     const handleSumbit = async (e) => {
         e.preventDefault()
 
@@ -31,14 +38,7 @@ const WorkoutForm = ({ handleClose, namesList }) => {
             return
         }
 
-        const exerciseSend = exercises.map((e) => {
-            return {
-                name: e.name.name,
-                sets: e.sets
-            }
-        })
-
-        const workout = {title: title, date: date, duration: duration, exercises: exerciseSend}
+        const workout = {title: title, date: date, duration: duration, exercises: exercises}
 
         const response = await fetch('/api/workouts', {
             method: 'POST',
@@ -108,7 +108,7 @@ const WorkoutForm = ({ handleClose, namesList }) => {
                     InputProps={{style: {width: '50%'}}}
                     error={emptyFields && emptyFields.includes('title')}
                 />
-                <Stack direction='row' spacing={4}>
+                <Stack direction='row' spacing={4} alignItems='center' style={{marginTop: '15px'}}>
                     <span>Date:</span>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker 
