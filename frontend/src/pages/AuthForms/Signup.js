@@ -1,5 +1,6 @@
+import './AuthForm.css'
 import { useState } from 'react'
-import { useSignup } from '../hooks/useSignup'
+import { useSignup } from '../../hooks/useSignup'
 
 const Signup = () => {
     const [email, setEmail] = useState('')

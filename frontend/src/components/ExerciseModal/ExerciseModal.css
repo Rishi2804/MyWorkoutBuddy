@@ -1,0 +1,21 @@
+.instructions {
+    max-height: 60%;
+    overflow-y: scroll;
+    padding: 15px;
+    border-radius: 20px;
+    scrollbar-width: thin;
+    box-shadow: inset 0 0 5px black;
+}
+
+.wrapper {
+    height: 50%;
+    overflow-y: scroll;
+}
+
+.name {
+    margin-bottom: -5px;
+}
+
+.big-image {
+    width: 100%;
+}
