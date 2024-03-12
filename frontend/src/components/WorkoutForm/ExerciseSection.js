@@ -1,17 +1,13 @@
-import { useState } from "react";
 import { Button, TextField, Autocomplete, Box, InputBase } from "@mui/material"
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 import DeleteButtonThemeProvider from '../../themes/DeleteButtonThemeProvider'
 import AddButtonThemeProvider from "../../themes/AddButtonThemeProvider";
 import DeleteIcon from '@mui/icons-material/Delete'
 
-const ExerciseSection = ({ exercises }) => {
-
-    const [ sets, setSets ] = useState([{reps: null, weight: null}])
+const ExerciseSection = ({ nameList, exercise, exerciseIndex, setName, setSets, displayDelete, removeSelf }) => {
 
     const cellStyle = {
         width: "100%",
-        height: "100%",
         bgcolor: '#e9eaea',
         textAlign: 'center',
         borderRadius: 10,
@@ -19,34 +15,36 @@ const ExerciseSection = ({ exercises }) => {
     }
 
     const handleAddSet = () => {
-        setSets([...sets, {reps: null, weight: null}])
+        setSets(exerciseIndex, [...exercise.sets, {reps: null, weight: null}])
     }
 
     const handleRemoveSet = (index) => {
-        const list = [...sets]
+        const list = [...exercise.sets]
         list.splice(index, 1)
-        setSets(list)
+        setSets(exerciseIndex, list)
     }
 
     const handleChange = (name, value, index) => {
-        const list = [...sets]
+        const list = [...exercise.sets]
         list[index][name] = parseInt(value)
-        setSets(list)
+        setSets(exerciseIndex, list)
     }
 
     return (
         <>
-            <div style={{display: "flex", alignItems: "center"}}>
+            <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                 <Autocomplete 
-                    options={exercises}
+                    options={nameList}
+                    value={exercise.name}
                     renderInput={(params) => <TextField {...params} variant="standard" label="Exercise"/>}
                     sx={{width: '80%'}}
+                    onChange={(event, value) => setName(exerciseIndex, value)}
                 />
-                <DeleteButtonThemeProvider>
-                    <Button sx={{float: "right"}}>
+                { displayDelete && <DeleteButtonThemeProvider>
+                    <Button sx={{float: "right"}} onClick={removeSelf}>
                         <DeleteIcon />
                     </Button>
-                </DeleteButtonThemeProvider>
+                </DeleteButtonThemeProvider>}
             </div>
             <TableContainer style={{maxHeight: 'unset'}}>
                 <Table size='small'>
@@ -68,20 +66,20 @@ const ExerciseSection = ({ exercises }) => {
                     </TableHead>
                     <TableBody>
                         {
-                            sets.map((set, index) => (
+                            exercise.sets.map((set, setIndex) => (
                                 <TableRow>
                                     <TableCell>
-                                        <Box sx={cellStyle}>{index + 1}</Box>
+                                        <Box sx={cellStyle}>{setIndex + 1}</Box>
                                     </TableCell>
                                     <TableCell></TableCell>
                                     <TableCell>
                                         <Box sx={cellStyle}>
                                             <InputBase 
                                                 type="number" 
-                                                value={set.weight}
+                                                value={set.weight ? set.weight : ''}
                                                 sx={{transform: 'translate(30%, 0%)'}} 
                                                 inputProps={{min: 0}}
-                                                onChange={(e) => handleChange("weight", e.target.value, index)}
+                                                onChange={(e) => handleChange("weight", e.target.value, setIndex)}
                                             />
                                         </Box>
                                     </TableCell>
@@ -89,16 +87,16 @@ const ExerciseSection = ({ exercises }) => {
                                         <Box sx={cellStyle}>
                                             <InputBase 
                                                 type="number" 
-                                                value={set.reps}
+                                                value={set.reps ? set.reps : ''}
                                                 sx={{transform: 'translate(30%, 0%)'}} 
                                                 inputProps={{min: 0}}
-                                                onChange={(e) => handleChange("reps", e.target.value, index)}
+                                                onChange={(e) => handleChange("reps", e.target.value, setIndex)}
                                             />
                                         </Box>
                                     </TableCell>
                                     <TableCell>
                                         <DeleteButtonThemeProvider>
-                                            {sets.length > 1 && <Button onClick={() => handleRemoveSet(index)}><DeleteIcon/></Button>}
+                                            {exercise.sets.length > 1 && <Button onClick={() => handleRemoveSet(setIndex)}><DeleteIcon/></Button>}
                                         </DeleteButtonThemeProvider>
                                     </TableCell>
                                 </TableRow>
@@ -108,7 +106,7 @@ const ExerciseSection = ({ exercises }) => {
                 </Table>
             </TableContainer>
             <AddButtonThemeProvider>
-                {sets.length < 7 && <Button variant="contained" onClick={handleAddSet}>Add Set</Button>}
+                {exercise.sets.length < 7 && <Button variant="contained" onClick={handleAddSet}>Add Set</Button>}
             </AddButtonThemeProvider>
         </>
     )

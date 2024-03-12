@@ -30,7 +30,7 @@ const EmpyWorkoutModal = ({ children }) => {
         </div>
         <Modal
             open={open}
-            onClose={handleClose}
+            //onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
