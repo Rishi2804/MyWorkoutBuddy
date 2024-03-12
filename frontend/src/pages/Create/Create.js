@@ -4,7 +4,7 @@ import { useAuthContext } from "../../hooks/useAuthContext"
 
 import { Button } from "@mui/material"
 import PrimaryButtonThemeProvider from '../../themes/PrimaryButtonThemeProvider'
-import EmptyWorkoutModal from '../../components/WorkoutForm/EmptyWorkoutModal'
+import WorkoutFormModal from '../../components/WorkoutForm/WorkoutFormModal'
 
 const Create = () => {
     const { dispatch } = useWorkoutsContext()
@@ -32,11 +32,11 @@ const Create = () => {
     return (
         <div>
             <h2>Quick Start</h2>
-            <EmptyWorkoutModal>
+            <WorkoutFormModal>
                 <PrimaryButtonThemeProvider>
                     <Button variant="contained">Create an Empty Workout</Button>
                 </PrimaryButtonThemeProvider>
-            </EmptyWorkoutModal>
+            </WorkoutFormModal>
         </div>
     )
 }

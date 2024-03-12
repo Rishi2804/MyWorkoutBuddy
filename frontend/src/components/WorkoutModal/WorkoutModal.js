@@ -10,6 +10,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import DeleteButtonThemeProvider from '../../themes/DeleteButtonThemeProvider';
+import WorkoutFormModal from '../WorkoutForm/WorkoutFormModal'
 
 // Contexts
 import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext"
@@ -99,9 +100,11 @@ const WorkoutModal = ({ children, workout, details }) => {
         <Fade in={open}>
           <Box sx={style}>
             <div className='actions'>
-              <Button variant='contained'>
-                Edit
-              </Button>
+              <WorkoutFormModal workout={workout}>
+                <Button variant='contained'>
+                  Edit
+                </Button>
+              </WorkoutFormModal>
               <DeleteButtonThemeProvider>
                 <Button variant='contained' onClick={handleDeleteClick} style={{marginLeft: '10px'}}>
                   <DeleteIcon style={{ fontSize: 18 }}/>

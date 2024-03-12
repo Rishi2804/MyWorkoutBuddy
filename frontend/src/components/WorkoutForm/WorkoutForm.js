@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ExerciseSection from "./ExerciseSection";
 import PrimaryButtonThemeProvider from "../../themes/PrimaryButtonThemeProvider";
+import dayjs from "dayjs";
 
 // contexts
 import { useAuthContext } from "../../hooks/useAuthContext";
@@ -17,18 +18,10 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
     const { user } = useAuthContext()
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
-
-    const [ title, setTitle ] = useState('Workout Name')
-    const [ date, setDate ] = useState(null)
-    const [ duration, setDuration ] = useState(null)
-    const [ exercises, setExercises ] = useState([{name: null, sets: [{reps: null, weight: null}]}])
-
-    if (workout) {
-        setTitle(workout.title)
-        setDate(workout.date)
-        setDuration(workout.duration)
-        setExercises(workout.exercises)
-    }
+    const [ title, setTitle ] = useState(workout ? workout.title : 'Workout Name')
+    const [ date, setDate ] = useState(workout ? dayjs(new Date(workout.date)) : null)
+    const [ duration, setDuration ] = useState(workout ? workout.duration : null)
+    const [ exercises, setExercises ] = useState(workout ? workout.exercises :[{name: null, sets: [{reps: null, weight: null}]}])
 
     const handleSumbit = async (e) => {
         e.preventDefault()
@@ -54,10 +47,38 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
             setError(json.error)
             setEmptyFields(json.emptyFields)
         } else {
-            setError(null)
-            setEmptyFields([])
             console.log('new workout added', json)
             dispatch({type: 'CREATE_WORKOUT', payload: json})
+            handleClose()
+        }
+    }
+
+    const handleUpdate = async (e) => {
+        e.preventDefault()
+
+        if (!user) {
+            setError('You must be logged in')
+            return
+        }
+
+        const updatedWorkout = {title: title, date: date, duration: duration, exercises: exercises}
+
+        const response = await fetch('/api/workouts/' + workout._id , {
+            method: 'PATCH',
+            body: JSON.stringify(updatedWorkout),
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+        const json = await response.json()
+
+        if (!response.ok) {
+            setError(json.error)
+            setEmptyFields(json.emptyFields)
+        } else {
+            console.log('workout updated', json)
+            dispatch({type: 'UPDATE_WORKOUT', payload: json})
             handleClose()
         }
     }
@@ -92,7 +113,7 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
                         <Button 
                             type="submit"
                             variant="contained"
-                            onClick={handleSumbit}
+                            onClick={handleUpdate}
                             sx={{width: '15%', float: "right"}}
                         >
                             Done
@@ -113,6 +134,7 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker 
                             onChange={(val) => setDate(val)}
+                            value={date}
                             sx={{ width: '25%'}}
                             slotProps={{ textField: { variant: 'standard' } }}
                         />

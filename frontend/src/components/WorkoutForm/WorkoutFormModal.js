@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import WorkoutForm from '../WorkoutForm/WorkoutForm'
+import WorkoutForm from './WorkoutForm'
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 const style = {
@@ -19,12 +19,13 @@ const style = {
     overflowY: 'scroll'
   };
 
-const EmpyWorkoutModal = ({ children }) => {
+const EmpyWorkoutModal = ({ workout, children }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); 
   const { user } = useAuthContext()
   const namesList = useRef([])
+  const workoutRef = useRef(workout)
 
   useEffect(() => {
     const fetchExerciseNames = async () => {
@@ -63,7 +64,7 @@ const EmpyWorkoutModal = ({ children }) => {
             aria-describedby="modal-modal-description"
         >
         <Box sx={style}>
-          <WorkoutForm handleClose={handleClose} namesList={namesList.current}/>
+          <WorkoutForm handleClose={handleClose} namesList={namesList.current} workout={workoutRef.current}/>
         </Box>
       </Modal>
     </div>
