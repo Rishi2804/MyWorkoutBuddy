@@ -34,7 +34,9 @@ const ExerciseSection = ({ nameList, exercise, exerciseIndex, setName, setSets, 
         <>
             <div style={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                 <Autocomplete 
-                    options={nameList}
+                    options={nameList ? nameList : ["exercises not loading"]}
+                    groupBy={(item) => item.firstLetter}
+                    getOptionLabel={(item) => item.name}
                     value={exercise.name}
                     renderInput={(params) => <TextField {...params} variant="standard" label="Exercise"/>}
                     sx={{width: '80%'}}

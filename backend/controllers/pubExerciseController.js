@@ -71,4 +71,10 @@ const getExcersie = async (req, res) => {
     res.status(200).json(exercise)
 }
 
-module.exports = { getExcersies, getExcersie }
+const getExerciseNames = async (req, res) => {
+    const names = await PublicExercise.find({}, { name: 1, _id: 0 }).sort({ name: 1 })
+
+    res.status(200).json(names)
+}
+
+module.exports = { getExcersies, getExcersie, getExerciseNames }

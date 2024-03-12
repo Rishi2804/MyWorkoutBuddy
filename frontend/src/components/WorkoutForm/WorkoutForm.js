@@ -12,7 +12,7 @@ import PrimaryButtonThemeProvider from "../../themes/PrimaryButtonThemeProvider"
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext";
 
-const WorkoutForm = ({ handleClose }) => {
+const WorkoutForm = ({ handleClose, namesList }) => {
     const { dispatch } = useWorkoutsContext()
     const { user } = useAuthContext()
     const [error, setError] = useState(null)
@@ -22,7 +22,6 @@ const WorkoutForm = ({ handleClose }) => {
     const [ date, setDate ] = useState(null)
     const [ duration, setDuration ] = useState(null)
     const [ exercises, setExercises ] = useState([{name: null, sets: [{reps: null, weight: null}]}])
-    const exerciseNames = ["bench", "squat", "pulldown"]
 
     const handleSumbit = async (e) => {
         e.preventDefault()
@@ -57,15 +56,13 @@ const WorkoutForm = ({ handleClose }) => {
     }
 
     const handleAdd = () => {
-        console.log(exercises)
         setExercises([...exercises, {name: null, sets: [{reps: null, weight: null}]}])
+        console.log(namesList)
     }
 
     const handleRemove = (index) => {
         const list = [...exercises]
-        console.log(list)
-        console.log(list.splice(index, 1))
-        console.log(list)
+        list.splice(index, 1)
         setExercises(list)
     }
 
@@ -129,7 +126,7 @@ const WorkoutForm = ({ handleClose }) => {
                     exercises.map((exercise, index) => (
                         <FormGroup sx={{marginBottom: '10px'}}>
                             <ExerciseSection 
-                                nameList={exerciseNames} 
+                                nameList={namesList} 
                                 exerciseIndex={index}
                                 exercise={exercise}
                                 setName={setName}

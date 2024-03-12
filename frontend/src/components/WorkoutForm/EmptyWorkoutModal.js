@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import WorkoutForm from '../WorkoutForm/WorkoutForm'
+import { useAuthContext } from '../../hooks/useAuthContext';
 
 const style = {
     position: 'absolute',
@@ -21,7 +22,35 @@ const style = {
 const EmpyWorkoutModal = ({ children }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => setOpen(false); 
+  const { user } = useAuthContext()
+  const namesList = useRef([])
+
+  useEffect(() => {
+    const fetchExerciseNames = async () => {
+        const response = await fetch('/api/public-exercises/names', {
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+        const json = await response.json()
+
+        if (response.ok) {
+            const names = json.map((item) => {
+              const firstLetter = item.name[0].toUpperCase();
+              return {
+                firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
+                ...item,
+              }
+            })
+            namesList.current = names
+        }
+    }
+
+    if (user) {
+      fetchExerciseNames()
+    }
+}, [user])
 
   return (
     <div>
@@ -30,12 +59,11 @@ const EmpyWorkoutModal = ({ children }) => {
         </div>
         <Modal
             open={open}
-            //onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
         <Box sx={style}>
-          <WorkoutForm handleClose={handleClose}/>
+          <WorkoutForm handleClose={handleClose} namesList={namesList.current}/>
         </Box>
       </Modal>
     </div>
