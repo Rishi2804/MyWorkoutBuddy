@@ -1,4 +1,4 @@
-import { Button, TextField, Autocomplete, Box, InputBase } from "@mui/material"
+import { Button, TextField, Autocomplete, Box, Input } from "@mui/material"
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 import DeleteButtonThemeProvider from '../../themes/DeleteButtonThemeProvider'
 import AddButtonThemeProvider from "../../themes/AddButtonThemeProvider";
@@ -75,26 +75,20 @@ const ExerciseSection = ({ nameList, exercise, exerciseIndex, setName, setSets, 
                                     </TableCell>
                                     <TableCell></TableCell>
                                     <TableCell>
-                                        <Box sx={cellStyle}>
-                                            <InputBase 
-                                                type="number" 
-                                                value={set.weight ? set.weight : ''}
-                                                sx={{transform: 'translate(30%, 0%)'}} 
-                                                inputProps={{min: 0}}
-                                                onChange={(e) => handleChange("weight", e.target.value, setIndex)}
-                                            />
-                                        </Box>
+                                        <Input 
+                                            type="number"
+                                            value={set.weight ? set.weight : ''}
+                                            inputProps={{min: 0}}
+                                            onChange={(e) => handleChange("weight", e.target.value, setIndex)}
+                                        />
                                     </TableCell>
                                     <TableCell>
-                                        <Box sx={cellStyle}>
-                                            <InputBase 
-                                                type="number" 
-                                                value={set.reps ? set.reps : ''}
-                                                sx={{transform: 'translate(30%, 0%)'}} 
-                                                inputProps={{min: 0}}
-                                                onChange={(e) => handleChange("reps", e.target.value, setIndex)}
-                                            />
-                                        </Box>
+                                        <Input 
+                                            type="number"
+                                            value={set.reps ? set.reps : ''}
+                                            inputProps={{min: 0}}
+                                            onChange={(e) => handleChange("reps", e.target.value, setIndex)}
+                                        />
                                     </TableCell>
                                     <TableCell>
                                         <DeleteButtonThemeProvider>

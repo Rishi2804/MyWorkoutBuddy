@@ -31,7 +31,14 @@ const WorkoutForm = ({ handleClose, namesList }) => {
             return
         }
 
-        const workout = {title: title, date: date, duration: duration, exercises: exercises}
+        const exerciseSend = exercises.map((e) => {
+            return {
+                name: e.name.name,
+                sets: e.sets
+            }
+        })
+
+        const workout = {title: title, date: date, duration: duration, exercises: exerciseSend}
 
         const response = await fetch('/api/workouts', {
             method: 'POST',
@@ -57,7 +64,6 @@ const WorkoutForm = ({ handleClose, namesList }) => {
 
     const handleAdd = () => {
         setExercises([...exercises, {name: null, sets: [{reps: null, weight: null}]}])
-        console.log(namesList)
     }
 
     const handleRemove = (index) => {
@@ -99,7 +105,7 @@ const WorkoutForm = ({ handleClose, namesList }) => {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     inputProps={{style: {fontSize: 25, fontWeight: 550}}}
-                    InputProps={{style: {width: '50%'}, disableUnderline: true}}
+                    InputProps={{style: {width: '50%'}}}
                     error={emptyFields && emptyFields.includes('title')}
                 />
                 <Stack direction='row' spacing={4}>
