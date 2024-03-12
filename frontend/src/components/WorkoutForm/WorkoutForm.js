@@ -8,11 +8,53 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ExerciseSection from "./ExerciseSection";
 import PrimaryButtonThemeProvider from "../../themes/PrimaryButtonThemeProvider";
 
+// contexts
+import { useAuthContext } from "../../hooks/useAuthContext";
+import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext";
+
 const WorkoutForm = ({ handleClose }) => {
+    const { dispatch } = useWorkoutsContext()
+    const { user } = useAuthContext()
+    const [error, setError] = useState(null)
+    const [emptyFields, setEmptyFields] = useState([])
+
     const [ title, setTitle ] = useState('Workout Name')
     const [ date, setDate ] = useState(null)
+    const [ duration, setDuration ] = useState(null)
     const [ exercises, setExercises ] = useState([{name: null, sets: [{reps: null, weight: null}]}])
     const exerciseNames = ["bench", "squat", "pulldown"]
+
+    const handleSumbit = async (e) => {
+        e.preventDefault()
+
+        if (!user) {
+            setError('You must be logged in')
+            return
+        }
+
+        const workout = {title: title, date: date, duration: duration, exercises: exercises}
+
+        const response = await fetch('/api/workouts', {
+            method: 'POST',
+            body: JSON.stringify(workout),
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${user.token}`
+            }
+        })
+        const json = await response.json()
+
+        if (!response.ok) {
+            setError(json.error)
+            setEmptyFields(json.emptyFields)
+        } else {
+            setError(null)
+            setEmptyFields([])
+            console.log('new workout added', json)
+            dispatch({type: 'CREATE_WORKOUT', payload: json})
+            handleClose()
+        }
+    }
 
     const handleAdd = () => {
         console.log(exercises)
@@ -25,7 +67,6 @@ const WorkoutForm = ({ handleClose }) => {
         console.log(list.splice(index, 1))
         console.log(list)
         setExercises(list)
-        console.log(exercises)
     }
 
     const setSets = (index, value) => {
@@ -46,10 +87,12 @@ const WorkoutForm = ({ handleClose }) => {
                 <div>
                     <FinishButtonThemeProvider>
                         <Button 
+                            type="submit"
                             variant="contained"
+                            onClick={handleSumbit}
                             sx={{width: '15%', float: "right"}}
                         >
-                            Finish
+                            Done
                         </Button>
                     </FinishButtonThemeProvider>
                 </div>
@@ -60,6 +103,7 @@ const WorkoutForm = ({ handleClose }) => {
                     onChange={(e) => setTitle(e.target.value)}
                     inputProps={{style: {fontSize: 25, fontWeight: 550}}}
                     InputProps={{style: {width: '50%'}, disableUnderline: true}}
+                    error={emptyFields && emptyFields.includes('title')}
                 />
                 <Stack direction='row' spacing={4}>
                     <span>Date:</span>
@@ -74,8 +118,11 @@ const WorkoutForm = ({ handleClose }) => {
                     <TextField 
                         type="number" 
                         variant="standard" 
+                        value={duration}
+                        onChange={(e) => setDuration(parseInt(e.target.value))}
                         inputProps={{min: 0}}
                         sx={{ width: '25%'}}
+                        error={emptyFields && emptyFields.includes('duration')}
                     />
                 </Stack>
                 {
@@ -110,6 +157,9 @@ const WorkoutForm = ({ handleClose }) => {
                             Cancel Workout
                         </Button>
                     </CancelButtonThemeProvider>
+                    {
+                        error && <div className="error">{error}</div>
+                    }
             </FormControl>
         </form>
     )

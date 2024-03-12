@@ -27,12 +27,8 @@ function App() {
               element={<Navigate to="/create"/>}
             />
             <Route 
-              path="/new"
-              element={<Create/>}
-            />
-            <Route 
               path="/create"
-              element={user ? <Home /> : <Navigate to="/login"/>}
+              element={user ? <Create /> : <Navigate to="/login"/>}
             />
             <Route 
               path="/history"
