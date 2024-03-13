@@ -45,6 +45,18 @@ const checkEmptyFields = (reqBody) => {
     if (emptyFields.length > 0) {
         return { error: 'Please fill in all the fields', emptyFields }
     }
+
+    // Make sure each exercise has sets
+    const exercisesWithoutSets = exercises.filter(exercise => !exercise.sets || exercise.sets.length === 0)
+    if (exercisesWithoutSets.length > 0) {
+        return { error: 'Each exercise must have sets' }
+    }
+
+    // Make sure the excercises have names
+    const excercisesWithoutName = exercises.filter(exercise => !exercise.name)
+    if (excercisesWithoutName.length > 0) {
+        return { error: 'Each exercise must have a name' }
+    }
 }
 
 // create new workout
@@ -84,7 +96,7 @@ const deleteTemplate = async (req, res) => {
     res.status(200).json(template)
 }
 
-// update a workout
+// update a template
 const updateTemplate = async (req, res) => {
     const { id } = req.params
 

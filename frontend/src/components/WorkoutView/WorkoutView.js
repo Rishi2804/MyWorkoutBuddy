@@ -9,9 +9,9 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 // Components
 import WorkoutModal from '../WorkoutModal/WorkoutModal'
 
-const WorkoutDetails = ({ workout }) => {
+const WorkoutDetails = ({ workout, template }) => {
     const exercises = workout.exercises
-    const date = new Intl.DateTimeFormat('en-us', { dateStyle: 'medium' }).format(new Date(workout.date))
+    const date = !template ? new Intl.DateTimeFormat('en-us', { dateStyle: 'medium' }).format(new Date(workout.date)) : null
 
     const totalWeightLifted = () => {
         let total = 0
@@ -49,22 +49,24 @@ const WorkoutDetails = ({ workout }) => {
     const previewList = exercisesSummaryTransfomer()
 
     return (
-        <WorkoutModal workout={workout} details={{date , duration, totalWeight}}>
+        <WorkoutModal workout={workout} details={{date , duration, totalWeight}} template={template}>
             <h3 className='title'>{workout.title}</h3>
-            <div className='details'>
-                <Stack direction="row" alignItems="center" gap={1}>
-                    <CalendarMonthIcon />
-                    <span className='caption'>{date}</span>
-                </Stack>
-                <Stack direction="row" alignItems="center" gap={1}>
-                    <AccessTimeIcon />
-                    <span className='caption'>{duration}</span>
-                </Stack>
-                <Stack direction="row" alignItems="center" gap={1}>
-                    <FitnessCenterIcon />
-                    <span className='caption'>{totalWeight}</span>
-                </Stack>
-            </div>
+            {
+                !template && <div className='details'>
+                                <Stack direction="row" alignItems="center" gap={1}>
+                                    <CalendarMonthIcon />
+                                    <span className='caption'>{date}</span>
+                                </Stack>
+                                <Stack direction="row" alignItems="center" gap={1}>
+                                    <AccessTimeIcon />
+                                    <span className='caption'>{duration}</span>
+                                </Stack>
+                                <Stack direction="row" alignItems="center" gap={1}>
+                                    <FitnessCenterIcon />
+                                    <span className='caption'>{totalWeight}</span>
+                                </Stack>
+                            </div>
+            }
             <div className='list'>
                 {
                     previewList && previewList.map((s) => (

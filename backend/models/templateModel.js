@@ -18,12 +18,12 @@ const setSchema = new Schema({
 const exerciseSchema = new Schema({
     name: {
         type: String,
-        required: false,
-        default: null
+        required: true
     },
     sets: {
         type: [setSchema],
-        required: true
+        required: true,
+        default: [{reps: null, weight: null}]
     }
 }, { _id: false })
 

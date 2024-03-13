@@ -13,14 +13,14 @@ import dayjs from "dayjs";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext";
 
-const WorkoutForm = ({ handleClose, namesList, workout }) => {
+const WorkoutForm = ({ handleClose, namesList, workout, template, create }) => {
     const { dispatch } = useWorkoutsContext()
     const { user } = useAuthContext()
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
     const [ title, setTitle ] = useState(workout ? workout.title : 'Workout Name')
-    const [ date, setDate ] = useState(workout ? dayjs(new Date(workout.date)) : null)
-    const [ duration, setDuration ] = useState(workout ? workout.duration : null)
+    const [ date, setDate ] = useState(workout && !template ? dayjs(new Date(workout.date)) : null)
+    const [ duration, setDuration ] = useState(workout && !template ? workout.duration : null)
     const [ exercises, setExercises ] = useState(workout ? workout.exercises :[{name: null, sets: [{reps: null, weight: null}]}])
 
     const handleCreate = async (e) => {
@@ -33,7 +33,7 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
 
         const workout = {title: title, date: date, duration: duration, exercises: exercises}
 
-        const response = await fetch('/api/workouts', {
+        const response = await fetch('/api/' + (!template ? 'workouts' : 'templates'), {
             method: 'POST',
             body: JSON.stringify(workout),
             headers: {
@@ -50,7 +50,7 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
             if (error) error.scrollIntoView({behavior: "smooth", block: "start"})
         } else {
             console.log('new workout added', json)
-            dispatch({type: 'CREATE_WORKOUT', payload: json})
+            if (!template) dispatch({type: 'CREATE_WORKOUT', payload: json})
             handleClose()
         }
     }
@@ -63,9 +63,9 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
             return
         }
 
-        const updatedWorkout = {title: title, date: date, duration: duration, exercises: exercises}
+        const updatedWorkout = {title: title, ...(!template ? {date: date, duration: duration} : {}), exercises: exercises}
 
-        const response = await fetch('/api/workouts/' + workout._id , {
+        const response = await fetch('/api/' + (!template ? 'workouts/' : 'templates/') + workout._id, {
             method: 'PATCH',
             body: JSON.stringify(updatedWorkout),
             headers: {
@@ -83,13 +83,13 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
         } else {
             const updatedJson = {_id: workout._id, ...updatedWorkout}
             console.log('workout updated', updatedJson)
-            dispatch({type: 'UPDATE_WORKOUT', payload: updatedJson})
+            if (!template) dispatch({type: 'UPDATE_WORKOUT', payload: updatedJson})
             handleClose()
         }
     }
 
     const handleSubmit = (e) => {
-        if (workout) {
+        if (workout && !create) {
             handleUpdate(e)
         } else {
             handleCreate(e)
@@ -141,28 +141,29 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
                     inputProps={{style: {fontSize: 25, fontWeight: 550}}}
                     InputProps={{style: {width: '50%'}}}
                     error={emptyFields && emptyFields.includes('title')}
-                />
-                <Stack direction='row' spacing={4} alignItems='center' style={{marginTop: '15px'}}>
-                    <span>Date:</span>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker 
-                            onChange={(val) => setDate(val)}
-                            value={date}
-                            sx={{ width: '25%'}}
-                            slotProps={{ textField: { variant: 'standard' } }}
-                        />
-                    </LocalizationProvider>
-                    <span>Duration (min):</span>
-                    <TextField 
-                        type="number" 
-                        variant="standard" 
-                        value={duration}
-                        onChange={(e) => setDuration(parseInt(e.target.value))}
-                        inputProps={{min: 0}}
-                        sx={{ width: '25%'}}
-                        error={emptyFields && emptyFields.includes('duration')}
-                    />
-                </Stack>
+                />{
+                    !template && <Stack direction='row' spacing={4} alignItems='center' style={{marginTop: '15px'}}>
+                                    <span>Date:</span>
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <DatePicker 
+                                            onChange={(val) => setDate(val)}
+                                            value={date}
+                                            sx={{ width: '25%'}}
+                                            slotProps={{ textField: { variant: 'standard' } }}
+                                        />
+                                    </LocalizationProvider>
+                                    <span>Duration (min):</span>
+                                    <TextField 
+                                        type="number" 
+                                        variant="standard" 
+                                        value={duration}
+                                        onChange={(e) => setDuration(parseInt(e.target.value))}
+                                        inputProps={{min: 0}}
+                                        sx={{ width: '25%'}}
+                                        error={emptyFields && emptyFields.includes('duration')}
+                                    />
+                                </Stack>
+                }
                 {
                     exercises.map((exercise, index) => (
                         <FormGroup sx={{marginBottom: '10px'}}>
@@ -192,7 +193,7 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
                             variant='contained' 
                             onClick={handleClose}
                         >
-                            {workout ? "Cancel Edit" : "Cancel Workout"}
+                            {(workout && !create) ? "Cancel Edit" : ((!template || create) ? "Cancel Workout" : "Cancel Template")}
                         </Button>
                     </CancelButtonThemeProvider>
                     {

@@ -31,7 +31,7 @@ const style = {
   overflowY: 'scroll'
 };
 
-const WorkoutModal = ({ children, workout, details }) => {
+const WorkoutModal = ({ children, workout, details, template }) => {
 
   const { dispatch } = useWorkoutsContext()
   const { user } = useAuthContext()
@@ -60,7 +60,7 @@ const WorkoutModal = ({ children, workout, details }) => {
       return
     }
 
-    const response = await fetch('/api/workouts/' + workout._id, {
+    const response = await fetch('/api/' + (!template ? 'workouts/' : 'templates/') + workout._id, {
       method: 'DELETE',
       headers: {
           'Authorization': `Bearer ${user.token}`
@@ -70,7 +70,7 @@ const WorkoutModal = ({ children, workout, details }) => {
     const json = await response.json()
 
     if (response.ok) {
-        dispatch({type: 'DELETE_WORKOUT', payload: json})
+        if (!template) dispatch({type: 'DELETE_WORKOUT', payload: json})
     }
     setTimeout(3000)
     handleClose()
@@ -103,33 +103,44 @@ const WorkoutModal = ({ children, workout, details }) => {
       >
         <Fade in={open}>
           <Box sx={style}>
-            <div className='actions'>
-              <WorkoutFormModal workout={copyWorkout}>
-                <Button variant='contained'>
-                  Edit
-                </Button>
-              </WorkoutFormModal>
-              <DeleteButtonThemeProvider>
-                <Button variant='contained' onClick={handleDeleteClick} style={{marginLeft: '10px'}}>
-                  <DeleteIcon style={{ fontSize: 18 }}/>
-                </Button>
-              </DeleteButtonThemeProvider>
+            <div className='actions' style={template ? {justifyContent: 'space-between'} : null}>
+              {
+                template && <WorkoutFormModal workout={copyWorkout} create >
+                              <Button variant='contained'>
+                                Create
+                              </Button>
+                            </WorkoutFormModal>
+              }
+              <div className='universal-actions'>
+                <WorkoutFormModal workout={copyWorkout} template={template}>
+                  <Button variant='contained' >
+                    Edit
+                  </Button>
+                </WorkoutFormModal>
+                <DeleteButtonThemeProvider>
+                  <Button variant='contained' onClick={handleDeleteClick} style={{marginLeft: '10px'}}>
+                    <DeleteIcon style={{ fontSize: 18 }}/>
+                  </Button>
+                </DeleteButtonThemeProvider>
+              </div>
             </div>
             <h2 className='header'>{workout.title}</h2>
-            <div className='details-section'>
-                <Stack direction="row" alignItems="center" gap={1}>
-                    <CalendarMonthIcon />
-                    <span className='caption'>{details.date}</span>
-                </Stack>
-                <Stack direction="row" alignItems="center" gap={1}>
-                    <AccessTimeIcon />
-                    <span className='caption'>{details.duration}</span>
-                </Stack>
-                <Stack direction="row" alignItems="center" gap={1}>
-                    <FitnessCenterIcon />
-                    <span className='caption'>{details.totalWeight}</span>
-                </Stack>
-            </div>
+            {
+              !template && <div className='details-section'>
+                            <Stack direction="row" alignItems="center" gap={1}>
+                                <CalendarMonthIcon />
+                                <span className='caption'>{details.date}</span>
+                            </Stack>
+                            <Stack direction="row" alignItems="center" gap={1}>
+                                <AccessTimeIcon />
+                                <span className='caption'>{details.duration}</span>
+                            </Stack>
+                            <Stack direction="row" alignItems="center" gap={1}>
+                                <FitnessCenterIcon />
+                                <span className='caption'>{details.totalWeight}</span>
+                            </Stack>
+                        </div>
+            }
             <div className='detailed-exercises' style={{overflowY: 'scroll'}}>
               {
                 workout.exercises.map((e) => (
