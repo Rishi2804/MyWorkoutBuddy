@@ -1,14 +1,18 @@
 import './Create.css'
 import { useEffect } from "react"
+import PrimaryButtonThemeProvider from '../../themes/PrimaryButtonThemeProvider'
+
+// hooks
 import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext"
 import { useAuthContext } from "../../hooks/useAuthContext"
 import { useTemplatesContext } from "../../hooks/useTemplatesContext"
 
+// MUI components
 import { Button } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add'
-import PrimaryButtonThemeProvider from '../../themes/PrimaryButtonThemeProvider'
-import WorkoutFormModal from '../../components/WorkoutForm/WorkoutFormModal'
 
+// components
+import WorkoutFormModal from '../../components/WorkoutForm/WorkoutFormModal'
 import WorkoutView from '../../components/WorkoutView/WorkoutView'
 
 const Create = () => {

@@ -8,10 +8,12 @@ import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+
+// components
 import DeleteDialogButton from '../DeleteDialogButton/DeleteDialogButton';
 import WorkoutFormModal from '../WorkoutForm/WorkoutFormModal'
 
-// Contexts
+// hooks
 import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext"
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useTemplatesContext } from "../../hooks/useTemplatesContext";

@@ -1,10 +1,4 @@
-import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import { OutlinedInput, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -18,7 +12,6 @@ const MenuProps = {
 };
 
 const FilterSelect = ({ options, text, multiSelect, filterValues, setFilterValues }) =>  {
-  const theme = useTheme();
 
   const handleChange = (event) => {
     const {

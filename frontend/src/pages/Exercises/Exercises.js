@@ -1,12 +1,16 @@
 import './Exercises.css'
+import { muscles, forces, equipment, mechanics } from '../../global/exerciseEnums'
 import { useEffect, useState } from 'react'
-import CircularProgress from '@mui/material/CircularProgress'
-import { useAuthContext } from '../../hooks/useAuthContext'
+
+import { TextField, CircularProgress } from '@mui/material'
+
+// components
 import ExerciseView from '../../components/ExerciseView/ExerciseView'
 import CustomPagination from '../../components/CustomPagination/CustomPagination'
-import { TextField } from '@mui/material'
 import FilterSelect from '../../components/FilterSelect/FilterSelect'
-import { muscles, forces, equipment, mechanics } from '../../global/exerciseEnums'
+
+// hooks
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 const Excercises = () => {
     const { user } = useAuthContext()

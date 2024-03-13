@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import WorkoutForm from './WorkoutForm'
+import { useState, useEffect, useRef } from 'react';
+import { Box, Modal } from '@mui/material';
+
+// hooks
 import { useAuthContext } from '../../hooks/useAuthContext';
 
 const style = {

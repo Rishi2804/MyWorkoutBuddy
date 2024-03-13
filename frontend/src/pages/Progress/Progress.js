@@ -1,6 +1,6 @@
 
 const Progress = () => {
-    return <h3>Progress</h3>
+    return <h2>Progress</h2>
 }
 
 export default Progress

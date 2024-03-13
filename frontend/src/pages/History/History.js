@@ -1,5 +1,7 @@
 import './History.css'
 import { useEffect } from 'react'
+
+// hooks
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { useWorkoutsContext } from '../../hooks/UseWorkoutsContext'
 
