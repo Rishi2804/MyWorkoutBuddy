@@ -25,9 +25,11 @@ const ExerciseSection = ({ nameList, exercise, exerciseIndex, setName, setSets, 
     }
 
     const handleChange = (name, value, index) => {
-        const list = [...exercise.sets]
-        list[index][name] = parseInt(value)
-        setSets(exerciseIndex, list)
+        if (value >= 0) {
+            const list = [...exercise.sets]
+            list[index][name] = parseInt(value)
+            setSets(exerciseIndex, list)
+        }
     }
 
     const autoCompleteFormatter = (name) => {

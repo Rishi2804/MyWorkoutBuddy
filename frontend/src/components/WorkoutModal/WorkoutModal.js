@@ -75,6 +75,9 @@ const WorkoutModal = ({ children, workout, details }) => {
     handleClose()
   }
 
+  // Deep copy so invalid values are not shown
+  const copyWorkout = JSON.parse(JSON.stringify(workout))
+  
   return (
     <div>
       <EnclosureCard 
@@ -100,7 +103,7 @@ const WorkoutModal = ({ children, workout, details }) => {
         <Fade in={open}>
           <Box sx={style}>
             <div className='actions'>
-              <WorkoutFormModal workout={workout}>
+              <WorkoutFormModal workout={copyWorkout}>
                 <Button variant='contained'>
                   Edit
                 </Button>

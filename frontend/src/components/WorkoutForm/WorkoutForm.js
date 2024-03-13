@@ -23,7 +23,7 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
     const [ duration, setDuration ] = useState(workout ? workout.duration : null)
     const [ exercises, setExercises ] = useState(workout ? workout.exercises :[{name: null, sets: [{reps: null, weight: null}]}])
 
-    const handleSumbit = async (e) => {
+    const handleCreate = async (e) => {
         e.preventDefault()
 
         if (!user) {
@@ -77,9 +77,18 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
             setError(json.error)
             setEmptyFields(json.emptyFields)
         } else {
-            console.log('workout updated', json)
-            dispatch({type: 'UPDATE_WORKOUT', payload: json})
+            const updatedJson = {_id: workout._id, ...updatedWorkout}
+            console.log('workout updated', updatedJson)
+            dispatch({type: 'UPDATE_WORKOUT', payload: updatedJson})
             handleClose()
+        }
+    }
+
+    const handleSubmit = (e) => {
+        if (workout) {
+            handleUpdate(e)
+        } else {
+            handleCreate(e)
         }
     }
 
@@ -113,7 +122,7 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
                         <Button 
                             type="submit"
                             variant="contained"
-                            onClick={handleUpdate}
+                            onClick={handleSubmit}
                             sx={{width: '15%', float: "right"}}
                         >
                             Done

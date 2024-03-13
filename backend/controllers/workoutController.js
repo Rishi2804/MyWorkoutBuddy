@@ -28,10 +28,8 @@ const getWorkout = async (req, res) => {
     res.status(200).json(workout)
 }
 
-
-// create new workout
-const createWorkout = async (req, res) => {
-    const { title, date, duration, exercises } = req.body
+const checkEmptyFields = (reqBody) => {
+    const { title, date, duration, exercises } = reqBody
 
     // Make sure none of the fields are empty
     let emptyFields = []
@@ -50,19 +48,19 @@ const createWorkout = async (req, res) => {
     }
 
     if (emptyFields.length > 0) {
-        return res.status(400).json({ error: 'Please fill in all the fields', emptyFields })
+        return { error: 'Please fill in all the fields', emptyFields }
     }
 
     // Make sure each exercise has sets
     const exercisesWithoutSets = exercises.filter(exercise => !exercise.sets || exercise.sets.length === 0)
     if (exercisesWithoutSets.length > 0) {
-        return res.status(400).json({ error: 'Each exercise must have sets' })
+        return { error: 'Each exercise must have sets' }
     }
 
     // Make sure the excercises have names
     const excercisesWithoutName = exercises.filter(exercise => !exercise.name)
     if (excercisesWithoutName.length > 0) {
-        return res.status(400).json({ error: 'Each exercise must have a name' })
+        return { error: 'Each exercise must have a name' }
     }
 
     // Make sure the sets have both weights and reps
@@ -76,7 +74,18 @@ const createWorkout = async (req, res) => {
     })
 
     if (setsWithoutWeightsOrReps.length > 0) {
-        return res.status(400).json({ error: 'Each set must have both weights and reps', setsWithoutWeightsOrReps })
+        return { error: 'Each set must have both weights and reps', setsWithoutWeightsOrReps }
+    }
+}
+
+// create new workout
+const createWorkout = async (req, res) => {
+    const { title, date, duration, exercises } = req.body
+
+    const errorMessage = checkEmptyFields(req.body)
+
+    if (errorMessage) {
+        return res.status(400).json(errorMessage)
     }
 
     // add doc to db
@@ -112,6 +121,12 @@ const updateWorkout = async (req, res) => {
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({error: "No such workout"})
+    }
+
+    const errorMessage = checkEmptyFields(req.body)
+
+    if (errorMessage) {
+        return res.status(400).json(errorMessage)
     }
 
     const workout = await Workout.findByIdAndUpdate(id, {
