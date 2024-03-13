@@ -25,7 +25,6 @@ const EmpyWorkoutModal = ({ workout, children }) => {
   const handleClose = () => setOpen(false); 
   const { user } = useAuthContext()
   const namesList = useRef([])
-  const workoutRef = useRef(workout)
 
   useEffect(() => {
     const fetchExerciseNames = async () => {
@@ -64,7 +63,7 @@ const EmpyWorkoutModal = ({ workout, children }) => {
             aria-describedby="modal-modal-description"
         >
         <Box sx={style}>
-          <WorkoutForm handleClose={handleClose} namesList={namesList.current} workout={workoutRef.current}/>
+          <WorkoutForm handleClose={handleClose} namesList={namesList.current} workout={workout}/>
         </Box>
       </Modal>
     </div>
