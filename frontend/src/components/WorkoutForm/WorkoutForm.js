@@ -46,6 +46,8 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
         if (!response.ok) {
             setError(json.error)
             setEmptyFields(json.emptyFields)
+            const error = document.querySelector('div.error')
+            if (error) error.scrollIntoView({behavior: "smooth", block: "start"})
         } else {
             console.log('new workout added', json)
             dispatch({type: 'CREATE_WORKOUT', payload: json})
@@ -76,6 +78,8 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
         if (!response.ok) {
             setError(json.error)
             setEmptyFields(json.emptyFields)
+            const error = document.querySelector('div.error')
+            if (error) error.scrollIntoView({behavior: "smooth", block: "start"})
         } else {
             const updatedJson = {_id: workout._id, ...updatedWorkout}
             console.log('workout updated', updatedJson)
@@ -188,7 +192,7 @@ const WorkoutForm = ({ handleClose, namesList, workout }) => {
                             variant='contained' 
                             onClick={handleClose}
                         >
-                            Cancel Workout
+                            {workout ? "Cancel Edit" : "Cancel Workout"}
                         </Button>
                     </CancelButtonThemeProvider>
                     {

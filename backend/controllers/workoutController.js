@@ -66,16 +66,17 @@ const checkEmptyFields = (reqBody) => {
 
     // Make sure the sets have both weights and reps
     let setsWithoutWeightsOrReps = []
-    exercises.forEach(exercise => {
+    exercises.forEach((exercise, exerciseIndex) => {
         exercise.sets.forEach((set, setIndex) => {
             if (!set.weight || !set.reps) {
-                setsWithoutWeightsOrReps.push({ exercise: exercise.name, set: setIndex })
+                setsWithoutWeightsOrReps.push({ exercise: exerciseIndex, set: setIndex })
             }
         })
     })
 
     if (setsWithoutWeightsOrReps.length > 0) {
-        return { error: 'Each set must have both weights and reps', setsWithoutWeightsOrReps }
+        emptyFields.push(...setsWithoutWeightsOrReps)
+        return { error: 'Each set must have both weights and reps', emptyFields }
     }
 }
 
