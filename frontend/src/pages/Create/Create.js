@@ -1,7 +1,8 @@
 import './Create.css'
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext"
 import { useAuthContext } from "../../hooks/useAuthContext"
+import { useTemplatesContext } from "../../hooks/useTemplatesContext"
 
 import { Button } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add'
@@ -11,9 +12,9 @@ import WorkoutFormModal from '../../components/WorkoutForm/WorkoutFormModal'
 import WorkoutView from '../../components/WorkoutView/WorkoutView'
 
 const Create = () => {
-    const { dispatch } = useWorkoutsContext()
+    const { dispatch: dispatchWorkouts } = useWorkoutsContext()
     const { user } = useAuthContext()
-    const [ templates, setTemplates ] = useState([])
+    const { templates, dispatch: dispatchTemplates } = useTemplatesContext()
 
     useEffect(() => {
         const fetchWorkouts = async () => {
@@ -25,7 +26,7 @@ const Create = () => {
             const json = await response.json()
 
             if (response.ok) {
-                dispatch({type: 'SET_WORKOUTS', payload: json})
+                dispatchWorkouts({type: 'SET_WORKOUTS', payload: json})
             }
         }
 
@@ -38,7 +39,7 @@ const Create = () => {
             const json = await response.json()
 
             if (response.ok) {
-                setTemplates(json)
+                dispatchTemplates({type: 'SET_TEMPLATES', payload: json})
             }
         }
 
@@ -46,7 +47,7 @@ const Create = () => {
             fetchWorkouts()
             fetchTemplates()
         }
-    }, [dispatch, user])
+    }, [dispatchTemplates, dispatchWorkouts, user])
 
     return (
         <div>

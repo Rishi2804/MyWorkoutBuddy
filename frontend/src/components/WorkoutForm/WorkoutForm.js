@@ -12,9 +12,12 @@ import dayjs from "dayjs";
 // contexts
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext";
+import { useTemplatesContext } from "../../hooks/useTemplatesContext";
+
 
 const WorkoutForm = ({ handleClose, namesList, workout, template, create }) => {
-    const { dispatch } = useWorkoutsContext()
+    const { dispatch: dispatchWorkout } = useWorkoutsContext()
+    const { dispatch: dispatchTemplate } = useTemplatesContext()
     const { user } = useAuthContext()
     const [error, setError] = useState(null)
     const [emptyFields, setEmptyFields] = useState([])
@@ -50,7 +53,8 @@ const WorkoutForm = ({ handleClose, namesList, workout, template, create }) => {
             if (error) error.scrollIntoView({behavior: "smooth", block: "start"})
         } else {
             console.log('new workout added', json)
-            if (!template) dispatch({type: 'CREATE_WORKOUT', payload: json})
+            if (!template) dispatchWorkout({type: 'CREATE_WORKOUT', payload: json})
+            else dispatchTemplate({type: 'CREATE_TEMPLATE', payload: json})
             handleClose()
         }
     }
@@ -83,7 +87,8 @@ const WorkoutForm = ({ handleClose, namesList, workout, template, create }) => {
         } else {
             const updatedJson = {_id: workout._id, ...updatedWorkout}
             console.log('workout updated', updatedJson)
-            if (!template) dispatch({type: 'UPDATE_WORKOUT', payload: updatedJson})
+            if (!template) dispatchWorkout({type: 'UPDATE_WORKOUT', payload: updatedJson})
+            else dispatchTemplate({type: 'UPDATE_TEMPLATE', payload: updatedJson})
             handleClose()
         }
     }

@@ -15,6 +15,7 @@ import WorkoutFormModal from '../WorkoutForm/WorkoutFormModal'
 // Contexts
 import { useWorkoutsContext } from "../../hooks/UseWorkoutsContext"
 import { useAuthContext } from '../../hooks/useAuthContext'
+import { useTemplatesContext } from "../../hooks/useTemplatesContext";
 
 const style = {
   position: 'absolute',
@@ -33,8 +34,9 @@ const style = {
 
 const WorkoutModal = ({ children, workout, details, template }) => {
 
-  const { dispatch } = useWorkoutsContext()
+  const { dispatch: dispatchWorkout } = useWorkoutsContext()
   const { user } = useAuthContext()
+  const { dispatch: dispatchTemplate } = useTemplatesContext()
 
 
   const [open, setOpen] = useState(false);
@@ -70,7 +72,8 @@ const WorkoutModal = ({ children, workout, details, template }) => {
     const json = await response.json()
 
     if (response.ok) {
-        if (!template) dispatch({type: 'DELETE_WORKOUT', payload: json})
+        if (!template) dispatchWorkout({type: 'DELETE_WORKOUT', payload: json})
+        else dispatchTemplate({type: 'DELETE_TEMPLATE', payload: json})
     }
     setTimeout(3000)
     handleClose()
