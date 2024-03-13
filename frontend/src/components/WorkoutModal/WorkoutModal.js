@@ -5,11 +5,10 @@ import { useState } from 'react'
 import { styled } from '@mui/material/styles';
 import { Button, Paper, Modal, Backdrop, Fade, Box, Stack } from '@mui/material';
 import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import DeleteButtonThemeProvider from '../../themes/DeleteButtonThemeProvider';
+import DeleteDialogButton from '../DeleteDialogButton/DeleteDialogButton';
 import WorkoutFormModal from '../WorkoutForm/WorkoutFormModal'
 
 // Contexts
@@ -120,11 +119,7 @@ const WorkoutModal = ({ children, workout, details, template }) => {
                     Edit
                   </Button>
                 </WorkoutFormModal>
-                <DeleteButtonThemeProvider>
-                  <Button variant='contained' onClick={handleDeleteClick} style={{marginLeft: '10px'}}>
-                    <DeleteIcon style={{ fontSize: 18 }}/>
-                  </Button>
-                </DeleteButtonThemeProvider>
+                <DeleteDialogButton confirmAction={handleDeleteClick} />
               </div>
             </div>
             <h2 className='header'>{workout.title}</h2>

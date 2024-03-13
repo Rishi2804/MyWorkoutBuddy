@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthContext } from './hooks/useAuthContext'
 
 // pages & components
-import Home from "./pages/Home"
 import Create from "./pages/Create/Create"
 import History from './pages/History/History'
 import Progress from './pages/Progress/Progress'
@@ -10,7 +9,7 @@ import Excercises from './pages/Exercises/Exercises'
 import Signup from "./pages/AuthForms/Signup"
 import Login from "./pages/AuthForms/Login"
 import Header from "./components/Header/Header"
-import UserBottomNav from './components/UserBottomNav'
+import UserBottomNav from './components/UserBottomNav/UserBottomNav'
 
 function App() {
   const { user } = useAuthContext()
