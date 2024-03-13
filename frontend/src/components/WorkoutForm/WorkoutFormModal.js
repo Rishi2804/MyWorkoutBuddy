@@ -19,7 +19,7 @@ const style = {
     overflowY: 'scroll'
   };
 
-const EmpyWorkoutModal = ({ workout, children }) => {
+const WorkoutFormModal = ({ workout, template, create, children }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); 
@@ -63,11 +63,11 @@ const EmpyWorkoutModal = ({ workout, children }) => {
             aria-describedby="modal-modal-description"
         >
         <Box sx={style}>
-          <WorkoutForm handleClose={handleClose} namesList={namesList.current} workout={workout}/>
+          <WorkoutForm handleClose={handleClose} namesList={namesList.current} workout={workout} template={template} create={create}/>
         </Box>
       </Modal>
     </div>
   );
 }
 
-export default EmpyWorkoutModal
+export default WorkoutFormModal

@@ -3,6 +3,11 @@
     justify-content: flex-end;
 }
 
+.universal-actions {
+    display: flex;
+    float: right;
+}
+
 .header {
     text-align: center;
     color: var(--primary);
