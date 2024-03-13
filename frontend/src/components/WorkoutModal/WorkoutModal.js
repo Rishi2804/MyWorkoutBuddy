@@ -51,7 +51,8 @@ const WorkoutModal = ({ children, workout, details }) => {
     backgroundColor: 'white',
     borderRadius: '25px',
     position: 'relative',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   }));
 
   const handleDeleteClick = async () => {

@@ -28,6 +28,7 @@
 
 .list-item {
     font-size: 0.97em;
+    white-space: 'nowrap';
 }
 
 .workout {

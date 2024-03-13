@@ -28,6 +28,7 @@ const getWorkout = async (req, res) => {
     res.status(200).json(workout)
 }
 
+// helper method
 const checkEmptyFields = (reqBody) => {
     const { title, date, duration, exercises } = reqBody
 
