@@ -13,7 +13,7 @@ const app = express()
 
 // middleware
 app.use(cors({
-    origin: 'http://localhost:3000'
+    origin: 'https://my-workout-buddy-ekgkydkhw-rishis-projects-9dc1a5ff.vercel.app'
 }))
 app.use(express.json())
 
