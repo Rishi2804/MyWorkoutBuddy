@@ -63,7 +63,7 @@ const WorkoutModal = ({ children, workout, details, template }) => {
       return
     }
 
-    const response = await fetch('/api/' + (!template ? 'workouts/' : 'templates/') + workout._id, {
+    const response = await fetch('https://myworkoutbuddy-backend.onrender.com/api/' + (!template ? 'workouts/' : 'templates/') + workout._id, {
       method: 'DELETE',
       headers: {
           'Authorization': `Bearer ${user.token}`

@@ -36,7 +36,7 @@ const WorkoutForm = ({ handleClose, namesList, workout, template, create }) => {
 
         const workout = {title: title, date: date, duration: duration, exercises: exercises}
 
-        const response = await fetch('/api/' + (!template ? 'workouts' : 'templates'), {
+        const response = await fetch('https://myworkoutbuddy-backend.onrender.com/api/' + (!template ? 'workouts' : 'templates'), {
             method: 'POST',
             body: JSON.stringify(workout),
             headers: {
@@ -69,7 +69,7 @@ const WorkoutForm = ({ handleClose, namesList, workout, template, create }) => {
 
         const updatedWorkout = {title: title, ...(!template ? {date: date, duration: duration} : {}), exercises: exercises}
 
-        const response = await fetch('/api/' + (!template ? 'workouts/' : 'templates/') + workout._id, {
+        const response = await fetch('https://myworkoutbuddy-backend.onrender.com/api/' + (!template ? 'workouts/' : 'templates/') + workout._id, {
             method: 'PATCH',
             body: JSON.stringify(updatedWorkout),
             headers: {

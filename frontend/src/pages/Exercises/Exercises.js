@@ -29,7 +29,7 @@ const Excercises = () => {
         const fetchExercises = async () => {
             setLoading(true)
             const trimmedSearchTerm = searchTerm ? searchTerm.trim() : null
-            const response = await fetch(`/api/public-exercises?page=${page}&limit=50` 
+            const response = await fetch(`https://myworkoutbuddy-backend.onrender.com/api/public-exercises?page=${page}&limit=50` 
                                             + (trimmedSearchTerm ? `&search=${trimmedSearchTerm}` : '')
                                             + (primaryMuscleFilters.length !== 0 ? `&primaryMuscles=${primaryMuscleFilters.join(',')}` : '')
                                             + (secondaryMuscleFilters.length !== 0 ? `&secondaryMuscles=${secondaryMuscleFilters.join(',')}` : '')

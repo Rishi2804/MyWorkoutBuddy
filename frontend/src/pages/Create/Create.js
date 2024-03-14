@@ -22,7 +22,7 @@ const Create = () => {
 
     useEffect(() => {
         const fetchWorkouts = async () => {
-            const response = await fetch('/api/workouts', {
+            const response = await fetch('https://myworkoutbuddy-backend.onrender.com/api/workouts', {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }
@@ -35,7 +35,7 @@ const Create = () => {
         }
 
         const fetchTemplates = async () => {
-            const response = await fetch('/api/templates', {
+            const response = await fetch('https://myworkoutbuddy-backend.onrender.com/api/templates', {
                 headers: {
                     'Authorization': `Bearer ${user.token}`
                 }

@@ -29,7 +29,7 @@ const WorkoutFormModal = ({ workout, template, create, children }) => {
 
   useEffect(() => {
     const fetchExerciseNames = async () => {
-        const response = await fetch('/api/public-exercises/names', {
+        const response = await fetch('https://myworkoutbuddy-backend.onrender.com/api/public-exercises/names', {
             headers: {
                 'Authorization': `Bearer ${user.token}`
             }
