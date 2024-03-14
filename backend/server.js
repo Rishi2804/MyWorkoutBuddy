@@ -13,7 +13,7 @@ const app = express()
 
 // middleware
 app.use(cors({
-    origin: 'http://localhost:4000'
+    origin: 'http://localhost:3000'
 }))
 app.use(express.json())
 
