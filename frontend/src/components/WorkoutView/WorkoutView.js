@@ -17,7 +17,7 @@ const WorkoutDetails = ({ workout, template }) => {
         let total = 0
         exercises.forEach(e => {
             e.sets.forEach(set => {
-                total += set.weight
+                total += (set.weight * set.reps)
             })
         })
         return total
