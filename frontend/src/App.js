@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuthContext } from './hooks/useAuthContext'
+import { Helmet } from 'react-helmet'
 
 // pages & components
 import Create from "./pages/Create/Create"
@@ -18,6 +19,10 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
+        <Helmet>
+          <title>MyWorkoutBuddy</title>
+          <meta name="description" content="A detailed workout tracker used to find exercises and track your progress" />
+        </Helmet>
         <Header />
         <div className="pages">
           <Routes>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import DeleteButtonThemeProvider from '../../themes/DeleteButtonThemeProvider';
+import CancelButtonThemeProvider from '../../themes/CancelButtonThemeProvider';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const DeleteDialogButton = ({ confirmAction }) =>  {
@@ -38,9 +39,9 @@ const DeleteDialogButton = ({ confirmAction }) =>  {
             </DialogContent>
             <DialogActions>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={confirmAction} autoFocus>
-                Delete
-            </Button>
+            <CancelButtonThemeProvider>
+              <Button onClick={confirmAction} autoFocus>Delete</Button>
+            </CancelButtonThemeProvider>
             </DialogActions>
         </Dialog>
     </>
