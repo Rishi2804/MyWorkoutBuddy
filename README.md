@@ -16,4 +16,8 @@ MyWorkoutBuddy is a web application that easily allows you to create a detailed 
 
 ## Technologies
 Fronted: React, MUI styling components
+
 Backend: Node.js, Express, MongoDB Atlas
+
+## Where to use
+You can use this application [here](https://my-workout-buddy-ekgkydkhw-rishis-projects-9dc1a5ff.vercel.app/)
